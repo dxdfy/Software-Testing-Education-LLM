@@ -60,7 +60,7 @@ def create_or_load_vector_db(file_path, persist_directory="./chroma_db", model_n
 
 if __name__ == '__main__':
     # 文件路径
-    file_path = "./ch1软件测试知识库.txt"
+    file_path = "docs/ch1软件测试知识库.txt"
     # 创建或加载向量数据库
     db = create_or_load_vector_db(file_path)
     # 创建检索器
