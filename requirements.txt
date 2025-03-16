@@ -5,6 +5,5 @@ langchain_core==0.3.39
 langchain_huggingface==0.1.2
 streamlit==1.43.0
 chromadb==0.6.3
-sqlite3==3.45.3
 openai~=1.64.0
 toml~=0.10.2
