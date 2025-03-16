@@ -1,7 +1,237 @@
-软件缺陷 (Software Defect45) : 存在于软件（文档、数据、程序）之中的那些不希望或不可接受的偏差。缺陷事实上是一个静态的事物。那么，在我们使用手机时出现的“闪退”或者“打怪”时游戏崩溃是缺陷吗？不是！这些都不是缺陷，而是缺陷被激活时表现出的外部行为结果。这些恼人的外部行为结果在标准的软件测试术语中被称为失效。软件失效(Software Failure): 软件运行时产生的一种不希望或不可接受的外部行为结果（可以通过运行结果被观测到）软件故障(Software Fault): 软件运行过程中出现的一种不希望或不可接受的内部状态（不能通过运行结果被观测到）。故障是缺陷激活的结果，或者换句话说，缺陷只存在于程序或软件工件里，是一个静态的事物，当程序运行时，程序不再被称为程序而是进程，相应地，缺陷不再是缺陷而被称为故障（如果缺陷被激活的话，即进程运行到包含缺陷的代码并且产生了与预期不相符的行为）。如果缺陷被激活，软件内部就可能会出现故障，对于软件故障如果没有适当的处理措施的话，很可能会导致软件失效。外部可见的软件失效是测试中推断软件中存在缺陷的基本方法。没有失效并不代表软件中不存在缺陷Software Fault (软件故障)，有缺陷并不一定产生故障，，有故障也并不一定会失效，产生失效一定意味着软件有故障，产生失效一定意味着软件存在缺陷，产生故障一定意味着软件存在缺陷，有缺陷并不一定产生故障，有故障也并不一定会失效。缺陷具有隐蔽性，需要使用专门的方法和技术予以捕捉，而承担这个任务的角色就是测试工程师。测试人员的任务就是千方百计地在庞大的输入域中找到那些能够将缺陷暴露出来的输入，而且越早越好。 
-请记住缺陷的暴露需要满足三个条件：可达性(Reachability)、感染性(Infection)和传播性(Propagation)，这三个条件集合在一起被称为 RIP 模型。1) Reachability: The location or locations in the program that contain the defectmust be reached2) Infection: After executing the location, the state of the program must be incorrect （请注意：感染性是指在执行包含缺陷的代码后，系统的实际状态和期望的不一致）。3) Propagation: The infected state must propagate to cause some output of the program to be incorrect.以 findLast为例深入讲解缺陷、故障、失效和 RIP 模型1) 案例中已给的输入：x={2,3,5}; y=2，由于期望输出11是 0，而实际输出12是-1，因此，使用 x={2,3,5}; y=2 可能捕捉到该缺陷；然而，不是任何输入都能做到这点2) 不能执行到包含缺陷的代码： 如果选择 x=Null，y=任意值，例如,(x=null,y=4)的输入运行代码的话，则并没有执行到包含缺陷的位置，程序运行就已经结束了。此时，我们称输入（实际上应该说测试输入）不具可达性。3) 具备可达性的输入不一定能产生故障(没有故障自然不会有失效)，例如输入x={ }（空数组），y=4，在正确和错误代码下运行的内部状态都一样。因为 i=-1，在执行完成错误代码 i>0 和正确代码 i>=0 的情况下，PC 指针都是 return -1 且各个变量的值也都相同：x 为空数组，y=4，i=-1。不能产生故障的输入不具感染性。感染性的判断是在执行完成包含缺陷代码之后即刻进行的，对于 findLast是在执行 i>0 之后马上判断，例如对于 x=[1,2,4]，y=4，因为正确（绿色）和错误（橘色）代码下运行后的系统的状态是一样的，因此，并没有产生故障。4）具备可达性和感染性的输入不一定产生失效（毕竟只有产生失效，才会知道代码中有缺陷），例如 x=[1]，y=4，在正确和错误代码下运行的最终结果都一样，虽然在执行过程中存在故障，但错误的内部状态并没有被传播到最终可观测的输出结果。虽然在执行过程中存在若干故障（Figure 1-7 中的橘色状态都是，绿色状态是期望的正确状态），但错误的内部状态并没有被传播到最终可观测的输出结果，最终结果都是 return -1。不能将故障状态保持到可观测端的输入不具传播性。
-什么是软件质量，缺陷是相对于软件质量而言的，如果对质量没有要求，则缺陷就失去了讨论的价值和基础。那么，什么是软件质量呢？著名的质量管理专家 Joseph M Juran给出的质量定义为：质量是一种适用性，即产品在使用期间能满足使用者的需求。在 Juran 定义的基础上，IEEE Standard 829-2008 定义质量是系统、组件或过程满足特定需求的程度，满足客户/用户需求或期望的程度。1) 功能性（Functionality）：软件所实现的功能达到其设计规范和满足用户需求的程度2) 可靠性（Reliability）：在规定的时间和条件下，软件能维持其正常的功能操作、性能水平的程度/概率3) 易用性（Usability）：用户，包括正常人和残疾人，学习、操作、准备输入和理解输出所作努力的程度4) 效率（Efficiency）：在指定条件下，软件对操作的响应速度以及实现某种功能能有效利用计算资源的程度5) 可维护性（Maintainability）：当软件投入应用后，当需求发生变化，环境改变或软件发生错误时，进行修改的难易程度6) 可移植性（Portability）：软件从一个计算机系统或环境移植到另一个计算机系统或环境的容易程度，或者一个系统和外部条件共同工作的容易程度
-ISO/IEC 25010 是目前为止最新的质量属性模型1) 功能性（Functionality）：软件所实现的功能达到其设计规范和满足用户需求的程度2) 可靠性（Reliability）：在规定的时间和条件下，软件能维持其正常的功能操作、性能水平的程度/概率3) 易用性（Usability）：用户，包括正常人和残疾人，学习、操作、准备输入和理解输出所作努力的程度4) 效率（Efficiency）：在指定条件下，软件对操作的响应速度以及实现某种功能能有效利用计算资源的程度5) 可维护性（Maintainability）：当软件投入应用后，当需求发生变化，环境改变或软件发生错误时，进行修改的难易程度6) 可移植性（Portability）：软件从一个计算机系统或环境移植到另一个计算机系统或环境的容易程度，或者一个系统和外部条件共同工作的容易程度
-软件测试是贯穿整个软件开发生命周期，对软件产品进行验证和确认的活动过程，也是对软件产品质量持续的评估过程，其目的是尽快尽早地发现软件产品中存在的各种缺陷，尽最大可能揭示软件开发过程中所存在的产品质量风险。软件测试包含静态测试和动态测试两个部分，值得说明地是，在本课程中我们主要关注动态测试，讨论动态测试方法。不同的软件组织会根据产品特性、开发过程、组织结构等采用不同的测试过程，但都遵守“被测对象粒度从小到大推进”的原则。比较常见的一种测试过程是按照“代码单元测试→代码接口测试→系统功能测试→系统非功能测试→成品测试”的路线推进。
-软件测试的挑战来源于在现实的条件下无法穷举输入组合空间中的每一元素，在实际的测试活动中，只能从中挑选出一些作代表，在软件测试领域通常称这些代表为测试用例（Test Case）。测试用例（集合）（Test Set）是针对被测对象运用软件测试方法技术的可视化结果，是软件测试中用于揭示缺陷验证行为的依据。测试用例的质量体现了测试人员能力的高低，决定着测试的质量。软件测试国际标准 ISO/IEC/IEEE 2911930给出了测试用例31的定义，但是，测试用例的具体定义还是众说纷纭并不统一。不过，一般都遵循包含测试前准备、测试中和测试后验证的测试用例结构原则。在我看到的所有关于测试用例的定义中，Paul Amman 等32给出的定义全面不失一般性：A test case is composed of the test case values, expected result, prefix values, postfixvalues for a complete execution and evaluation of the software under test：1) Test Case Values: The input values necessary to complete some execution ofthe software under test.2) Expected Results: The result that will be produced when executing the test if theprogram satisfies it intended behavior3) Prefix Values: Any inputs necessary to put the software into the appropriate stateto receive the test case values4) Postfix Values: Any inputs that need to be sent to the software after the test casevalues. There are usually two types of postfix values:i.Verification Values: Values necessary to see the results of the test case valuesii.Values needed to terminate the program or otherwise return it to a stable state
-测试用例的实现形式、结构和标准会随测试活动、软件组织的不同而有区别，但是有一点非常重要就是测试用例里必须包括测试输入值和相应的预期结果，尤其是预期结果。一个高质量的测试用例应该具备四个属性：有效性、仿效性、经济性和可维护性。有效性是指测试用例是否能够发现缺陷或者至少可能发现缺陷。软件测试的主要目的是寻找缺陷，因此，能够发现缺陷的测试用例比不能够发现缺陷的测试用例质量要高。仿效性用来衡量测试用例的代表程度。通常情况下，可能输入的输入项组合数目非常庞大，在现实条件下，软件测试人员们不可能在测试用例集合中穷举所有的输入组合，在测试时，只能选择其中的一些做代表。当然，这种挑选并不是随意的，需要符合这些被选出的测试用例如果不能发现缺陷，那么，没有被选出的测试用例能够发现同类型缺陷的概率应该非常低的原则。被选中的测试用例代表的测试用例数越多，则说明该测试用例的仿效性越好。经济性用来衡量测试用例所花费的成本，包括设计、实现、调试和运行测试用例的成本。可维护性是指修改和维护测试用例的难易程度。一个好的测试用例应该可以随着软件的不断变更，稍加变动甚至不作任何变动便可以多次重用以此降低重复测试的成本。由测试用例构成的集合被称为测试集合。
+软件缺陷 (Software Defect45) : 存在于软件（文档、数据、程序）之中的那些不希望或不可接受的偏差。缺陷事实上是一个静态的事物。那么，在我们使用手机时出现的“闪退”或者“打怪”时游戏崩溃是缺陷吗？不是！这些都不是缺陷，而是缺陷被激活时表现出的外部行为结果。这些恼人的外部行为结果在标准的软件测试术语中被称为失效。软件失效(Software Failure): 软件运行时产生的一种不希望或不可接受的外部行为结果（可以通过运行结果被观测到）软件故障(Software Fault): 软件运行过程中出现的一种不希望或不可接受的内部状态（不能通过运行结果被观测到）。故障是缺陷激活的结果，或者换句话说，缺陷只存在于程序或软件工件里，是一个静态的事物，当程序运行时，程序不再被称为程序而是进程，相应地，缺陷不再是缺陷而被称为故障（如果缺陷被激活的话，即进程运行到包含缺陷的代码并且产生了与预期不相符的行为）。如果缺陷被激活，软件内部就可能会出现故障，对于软件故障如果没有适当的处理措施的话，很可能会导致软件失效。外部可见的软件失效是测试中推断软件中存在缺陷的基本方法。没有失效并不代表软件中不存在缺陷Software Fault (软件故障)，有缺陷并不一定产生故障，，有故障也并不一定会失效，产生失效一定意味着软件有故障，产生失效一定意味着软件存在缺陷，产生故障一定意味着软件存在缺陷，有缺陷并不一定产生故障，有故障也并不一定会失效。缺陷具有隐蔽性，需要使用专门的方法和技术予以捕捉，而承担这个任务的角色就是测试工程师。测试人员的任务就是千方百计地在庞大的输入域中找到那些能够将缺陷暴露出来的输入，而且越早越好。 ###
+请记住缺陷的暴露需要满足三个条件：可达性(Reachability)、感染性(Infection)和传播性(Propagation)，这三个条件集合在一起被称为 RIP 模型。1) Reachability: The location or locations in the program that contain the defectmust be reached2) Infection: After executing the location, the state of the program must be incorrect （请注意：感染性是指在执行包含缺陷的代码后，系统的实际状态和期望的不一致）。3) Propagation: The infected state must propagate to cause some output of the program to be incorrect.以 findLast为例深入讲解缺陷、故障、失效和 RIP 模型1) 案例中已给的输入：x={2,3,5}; y=2，由于期望输出11是 0，而实际输出12是-1，因此，使用 x={2,3,5}; y=2 可能捕捉到该缺陷；然而，不是任何输入都能做到这点2) 不能执行到包含缺陷的代码： 如果选择 x=Null，y=任意值，例如,(x=null,y=4)的输入运行代码的话，则并没有执行到包含缺陷的位置，程序运行就已经结束了。此时，我们称输入（实际上应该说测试输入）不具可达性。3) 具备可达性的输入不一定能产生故障(没有故障自然不会有失效)，例如输入x={ }（空数组），y=4，在正确和错误代码下运行的内部状态都一样。因为 i=-1，在执行完成错误代码 i>0 和正确代码 i>=0 的情况下，PC 指针都是 return -1 且各个变量的值也都相同：x 为空数组，y=4，i=-1。不能产生故障的输入不具感染性。感染性的判断是在执行完成包含缺陷代码之后即刻进行的，对于 findLast是在执行 i>0 之后马上判断，例如对于 x=[1,2,4]，y=4，因为正确（绿色）和错误（橘色）代码下运行后的系统的状态是一样的，因此，并没有产生故障。4）具备可达性和感染性的输入不一定产生失效（毕竟只有产生失效，才会知道代码中有缺陷），例如 x=[1]，y=4，在正确和错误代码下运行的最终结果都一样，虽然在执行过程中存在故障，但错误的内部状态并没有被传播到最终可观测的输出结果。虽然在执行过程中存在若干故障（Figure 1-7 中的橘色状态都是，绿色状态是期望的正确状态），但错误的内部状态并没有被传播到最终可观测的输出结果，最终结果都是 return -1。不能将故障状态保持到可观测端的输入不具传播性。###
+什么是软件质量，缺陷是相对于软件质量而言的，如果对质量没有要求，则缺陷就失去了讨论的价值和基础。那么，什么是软件质量呢？著名的质量管理专家 Joseph M Juran给出的质量定义为：质量是一种适用性，即产品在使用期间能满足使用者的需求。在 Juran 定义的基础上，IEEE Standard 829-2008 定义质量是系统、组件或过程满足特定需求的程度，满足客户/用户需求或期望的程度。1) 功能性（Functionality）：软件所实现的功能达到其设计规范和满足用户需求的程度2) 可靠性（Reliability）：在规定的时间和条件下，软件能维持其正常的功能操作、性能水平的程度/概率3) 易用性（Usability）：用户，包括正常人和残疾人，学习、操作、准备输入和理解输出所作努力的程度4) 效率（Efficiency）：在指定条件下，软件对操作的响应速度以及实现某种功能能有效利用计算资源的程度5) 可维护性（Maintainability）：当软件投入应用后，当需求发生变化，环境改变或软件发生错误时，进行修改的难易程度6) 可移植性（Portability）：软件从一个计算机系统或环境移植到另一个计算机系统或环境的容易程度，或者一个系统和外部条件共同工作的容易程度。###
+ISO/IEC 25010 是目前为止最新的质量属性模型1) 功能性（Functionality）：软件所实现的功能达到其设计规范和满足用户需求的程度2) 可靠性（Reliability）：在规定的时间和条件下，软件能维持其正常的功能操作、性能水平的程度/概率3) 易用性（Usability）：用户，包括正常人和残疾人，学习、操作、准备输入和理解输出所作努力的程度4) 效率（Efficiency）：在指定条件下，软件对操作的响应速度以及实现某种功能能有效利用计算资源的程度5) 可维护性（Maintainability）：当软件投入应用后，当需求发生变化，环境改变或软件发生错误时，进行修改的难易程度6) 可移植性（Portability）：软件从一个计算机系统或环境移植到另一个计算机系统或环境的容易程度，或者一个系统和外部条件共同工作的容易程度。###
+软件测试是贯穿整个软件开发生命周期，对软件产品进行验证和确认的活动过程，也是对软件产品质量持续的评估过程，其目的是尽快尽早地发现软件产品中存在的各种缺陷，尽最大可能揭示软件开发过程中所存在的产品质量风险。软件测试包含静态测试和动态测试两个部分，值得说明地是，在本课程中我们主要关注动态测试，讨论动态测试方法。不同的软件组织会根据产品特性、开发过程、组织结构等采用不同的测试过程，但都遵守“被测对象粒度从小到大推进”的原则。比较常见的一种测试过程是按照“代码单元测试→代码接口测试→系统功能测试→系统非功能测试→成品测试”的路线推进。###
+软件测试的挑战来源于在现实的条件下无法穷举输入组合空间中的每一元素，在实际的测试活动中，只能从中挑选出一些作代表，在软件测试领域通常称这些代表为测试用例（Test Case）。测试用例（集合）（Test Set）是针对被测对象运用软件测试方法技术的可视化结果，是软件测试中用于揭示缺陷验证行为的依据。测试用例的质量体现了测试人员能力的高低，决定着测试的质量。软件测试国际标准 ISO/IEC/IEEE 2911930给出了测试用例31的定义，但是，测试用例的具体定义还是众说纷纭并不统一。不过，一般都遵循包含测试前准备、测试中和测试后验证的测试用例结构原则。在我看到的所有关于测试用例的定义中，Paul Amman 等32给出的定义全面不失一般性：A test case is composed of the test case values, expected result, prefix values, postfixvalues for a complete execution and evaluation of the software under test：1) Test Case Values: The input values necessary to complete some execution ofthe software under test.2) Expected Results: The result that will be produced when executing the test if theprogram satisfies it intended behavior3) Prefix Values: Any inputs necessary to put the software into the appropriate stateto receive the test case values4) Postfix Values: Any inputs that need to be sent to the software after the test casevalues. There are usually two types of postfix values:i.Verification Values: Values necessary to see the results of the test case valuesii.Values needed to terminate the program or otherwise return it to a stable state.###
+测试用例的实现形式、结构和标准会随测试活动、软件组织的不同而有区别，但是有一点非常重要就是测试用例里必须包括测试输入值和相应的预期结果，尤其是预期结果。一个高质量的测试用例应该具备四个属性：有效性、仿效性、经济性和可维护性。有效性是指测试用例是否能够发现缺陷或者至少可能发现缺陷。软件测试的主要目的是寻找缺陷，因此，能够发现缺陷的测试用例比不能够发现缺陷的测试用例质量要高。仿效性用来衡量测试用例的代表程度。通常情况下，可能输入的输入项组合数目非常庞大，在现实条件下，软件测试人员们不可能在测试用例集合中穷举所有的输入组合，在测试时，只能选择其中的一些做代表。当然，这种挑选并不是随意的，需要符合这些被选出的测试用例如果不能发现缺陷，那么，没有被选出的测试用例能够发现同类型缺陷的概率应该非常低的原则。被选中的测试用例代表的测试用例数越多，则说明该测试用例的仿效性越好。经济性用来衡量测试用例所花费的成本，包括设计、实现、调试和运行测试用例的成本。可维护性是指修改和维护测试用例的难易程度。一个好的测试用例应该可以随着软件的不断变更，稍加变动甚至不作任何变动便可以多次重用以此降低重复测试的成本。由测试用例构成的集合被称为测试集合。###
+控制流图（Control Flow Graph，CFG）本质上是一个有向图。控制流图用于推理或计算针对被测对象控制行为的测试用例。基于控制流测试的思想是将被测对象的控制行为抽象为控制流图，并以此为依据，设计满足相应覆盖准则的测试用例。在我们的讨论中，关注的是基路径覆盖。对于简单的代码，可能也不需要CFG，根据覆盖工具的指示补充测试用例即可。然而，对于复杂（代码很长，或者逻辑特别复杂）的代码，则需要使用 CFG 帮助我们处理（技术总是在面对复杂问题时才体现出自身的价值）。抽象是解决复杂问题的最佳方法而图是抽象的最佳描述形式。CFG 是由控制块(Block)集合和控制边(Edge)集合构成的有向图，其中控制块对应被测代码中的语句或语句块，控制边应于语句之间的控制逻辑。控制块由语句序列构成，对于同一个控制块内的语句必须满足“原子规则”，即控制块内的
+任意一条语句执行其它语句必须执行。###
+为了说明基路径需要先介绍路径的概念。通俗地说，路径是 CFG 节点的序列，满足任意相邻的两个节点构成图中的边，其形式化地描述（理论描述）为：Path is a sequence of nodes: (n1, n2, …, nm) where for 1 ≤ 𝑖<m, (ni,ni+1)ϵ E路径通常使用 p 表示。路径中包含边的个数被定义为路径的长度。在测试设计中，允许长度为 0 的路径存在。对于路径 p 而言，其节点序列的任意一个子集称为 p 的子路径。路径并不对应程序的一次完整执行。为了描述程序一次完整执行的轨迹，我们引入一种特殊的路径：完全路径(Complete Path)。以CFG 的初始节点开始，终止节点结束的路径被称为完全路径。如果 CFG 中存在迭代的话，可能存在的程序路径数目非常多，在测试资源受限的现实条件下，需要恰当的路径约减方法。一般，我们采用基路径法（PrimePath）。为此，我们首先引入简单路径（Simple Path）的概念。一条路径是简单路径(Simple Path)满足每个节点出现的次数有且仅有一次，但是初始节点和终止节点且只有初始节点和终止节点可以相同，即在简单路径内不存在迭代结构。基路径是一种特殊的简单路径，满足路径独特性规则，即基路径不能是其它简单路径的子路径。例如，简单路径(0,1,3,0)是基路径，而（0,1,3）虽然是简单路径，但却不是基路径，因为（0,1,3）是(0,1,3,0)的子路径。###
+基路径的计算方法有两种：一种是暴力计算法(Exhaust_PrimePathCal)3，另一种则是节点树计算法（DDL_PrimePathCal）基路径集合的计算从长度为 0 的路径开始，按照 G 的结构，逐个将已有路径长度增加 1，并判断是否得到新的简单路径，判断为简单路径的路径长度不再增加，重复该过程，直到所有路径都不能进
+一步扩展为止，就得到了 G 的所有简单路径。然后按照基路径的定义，从长度最长的简单路径开始，筛选满足不是其它子路径的简单路径作为基路径。对于控制流图 G 而言，节点树计算法（DDL_PrimePathCal）的基本思想是计算 G 的简单节点树集合（森林）。节点树是以 G 中的节点为根节点建立的树，且满足树中除根节点和叶节点可以相同外，从根节点到每个树中节点的路径中每个节点的出现次数有且仅有 1 次。在节点树中，每条从根节点到叶节点的路径即为一条简单路径。若节点树 T 不是任何其它节点树的子树，则称节点树 T 为简单节点树。所有简单节点树的从根节点到叶节点的路径集合为备选的基路径集合。然后，按照基路径的定义，从长度最长的简单路径开始，筛选满足不是其它子路径的简单路径作为基路径。###
+单元是一个小粒度的行为特性。从规模上说可能是一个函数、方法、页面，也可能是几个。例如，向购物车里加一件商品是一个功能特性，对应的单元测试需要测试购物车里商品数量会增加1且购买的商品在购物车中等等。###
+The Complexity of Test Inputs
+测试输入需要考虑的范畴包括被测代码的输入参数/被测代码内部需要读取的全局变量/被测代码内部需要读取的成员变量/被测代码内部调用的方法/函数获得的数据被测代码/内部调用的方法改写的数据
+The Complexity of Test Outputs
+预期输出包括/被测代码的返回值/被测代码的输出参数（C/C++）/被测代码内部改写的成员变量和全局变量/被测代码进行的文件更新、数据库更新、消息队列更新###
+• 等价划分是一种经典的分而治之的测试设计方法
+• 对分析得到的每个被测因素的输入域以预期结果相同为等价划分原则，
+划分为不同的等价类集合，划分需满足
+1. 划分覆盖整个待测试域（domain）
+2. 各个划分部分之间没有交集
+3. 以被测因素的约束为标准，划分需包括
+a) 有效等价类：符合约束的等价类
+b) 无效等价类：不符合约束的所有其它可能存在的情况
+等价划分启发式规则
+• 如果某个输入条件规定值的范围，可以确定一个有效等价类和两
+个无效等价类
+• 如果输入条件规定了一个输入值的集合，可以确定一个有效等价
+类和一个无效等价类。
+• 如果输入条件是一个布尔表达式的条件，可以确定一个有效等价
+类和一个无效等价类
+• 如果输入条件定义了一个“必须”的情况，比如”标识的第一字
+符必须是字母”那么可以确定一个有效等价类和一个无效等价类。
+• 如果有理由确信，某一等价类中的各元素在程序中的处理有区别，
+那就把这个等价类分成更小的等价类###
+• 边界值
+• 任何值得测试的范围的临界点，通常指等价类的边界，可分为
+1. 边界值：明确地定义在规格说明书中
+2. 次边界：隐含在软件中必须经过分析才能获得
+3. 仅物理量适用，逻辑变量慎重
+• 测试设计思想
+• 取边界点附近的值作为测试用例的输入，可参考如下的设计原则
+• 如果输入条件定义了数值区间(a,b)，那么测试用例应包括a、b、稍微比a
+大、稍微比b大、稍微比a小和稍微比b小等几种情况. 举个例子，如果a,b
+是整数, 除在a,b之间取正常点外，a,b,a-1,b-1,a+1,b+1都应被测试
+测试设计思想
+• 如果输入条件规定了值的个数, 那么最小个数、最大个数、大于和
+小于最小值、大于和小于最大值都应该被测试。
+• 如果程序的输入域是有序集合，则应选取集合的第一个元素和最
+后一个元素作为测试用例
+• 上述原则也适用于输出条件
+• 如果在程序中的数据结构有指定的边界，那么选择这个数据结构
+边界上的值作为测试用例。
+• 分析规格说明，找出其它可能的边界条件###
+组合策略包括
+1. All Combination Coverage(ACoC): 全组合值覆盖
+2. Each Choice Coverage(ECC)：单值覆盖
+3. Pair-Wise Coverage(PWC)：全对偶值覆盖
+4. T-Wise Coverage(TWC): 全T值覆盖
+5. Base Choice Coverage(BCC): 基本值覆盖
+6. Multiple Base Choices Coverage(MBCC):多基本值覆盖###
+The most obvious criterion is to choose all
+combinations
+All Combinations (ACoC) : All combinations of
+partitions from all parameter must be used.
+• Number of combinations under test is the product
+of the number of partitions in each parameter
+• If all combinations are feasible, the minimum
+number of  test cases is equal to the number of
+combinations under test###
+One criterion comes from the idea that we should
+try at least one value from each partition
+• Each Choice Coverage (ECC) : One value from each
+partition for each parameter must be used in at least
+one test case
+• Number of combinations under test is the number of
+partitions in the largest parameter
+• If all combinations are feasible, the minimum number
+of  test cases is equal to the number of combinations
+under test###
+Pair-Wise Coverage (PWC) : A value from each partition for
+each parameter must be combined with a value from
+every partition for each other parameter.
+• If P denotes the set of all partitions, 𝑝𝑗 denotes the i-th
+partition, the number of combinations under test is
+σ𝑗=1
+𝑗= 𝑃 −1 σ𝑘=𝑗+1
+𝑘=|𝑝| |𝑝𝑗 | × |𝑝𝑘 |
+• If the relevant combinations are feasible, the minimum
+number of  test cases is at least the product of two largest
+parameters如果被测因素为: X, Y, Z， X的取值域被划分为2个且取值域的代表值为
+x1, x2；Y包含3个取值域且代表值为y1,y2,y3；Z包含1个取值域且代表值
+为z1, 那么满足全对偶覆盖就要考虑(X,Y)（X,Z） (Y,Z)三种组合情况下的
+每个变量的所有取值和其他变量所有取值组成的对偶值，也就是
+(x1,y1),(x1,y2),(x1,y3),  (x2,y1),(x2,y2),(x2,y3), (x1,z1),(x2,z1), (y1,z1), (y2,z1), (y3,z1)，
+这些对偶值在某个测试用例里至少出现一次。比如有测试用例(x1,y2,z1)
+那么就包括了三个对偶 (x1,y2),(y2,z1),(x1,z1)。测试的任务就是设计若
+干测试用例让上面11种对偶值在某个测试用例里出现一次（当然，可
+以用不到11个测试用例来涵盖上面的11种对偶值）###
+T-Wise Coverage (TWC) : A value from each
+partition for each group of t parameters must be
+combined.###
+Base Choice Coverage (BCC) : A base choice partition is chosen
+for each parameter, and a base combination is formed by using
+the base choice for each parameter.  Subsequent combinations 
+are chosen by holding all but one base choice constant and
+using each non-base choice in each other parameter (一次针对一
+个被测特征，用其非基本值替代基本值，其余被测特征仍取基本值).
+• Number of combinations under test is one base + one for each
+other partition
+• If all combinations are feasible, the minimum number of  test
+cases of  test cases is equal to the number of combinations
+under test###
+Multiple Base Choice (MBC) : One or more base choice
+partitions are chosen for each parameter, and base
+combinations are formed by using each base choice for each
+parameter. Subsequent tests are chosen by holding all but one
+base choice constant for a base test[1] and using each non-base
+choices in each other parameter.
+• Number of combinations under test is the number of the
+maximum base choice of a partition + one for each other
+partition
+• If all combinations are feasible, the minimum number of  test
+cases is equal to the number of combinations under test###
+测试策略Right—BICEP
+• Right: Are the results right?
+• B: Are all the boundary conditions correct?
+• I: Can you check inverse relationships?
+• C: Can you cross-check results using other means?
+• E: Can you force error conditions to happen?
+• P: Are performance characteristics within bounds?        
+Right：
+• happy path tests: tests should first and foremost
+validate that the code produces expected results
+what the users want.
+• If the code ran correctly, how would I know?
+B：
+Boundary conditions
+• Bogus or inconsistent input values, a filename like:
+"!*W:X\&Gi/w$→>$g/h#WQ@.
+• Badly formatted data, bad phone number,
+hysun@ecnu.edu.cn
+• Computations that can result in numeric overflow.
+• Empty or missing values: 0, 0.0, "", nul
+• Values far in excess of reasonable expectations
+• Duplicates in lists that shouldn’t have duplicates
+• Ordered lists that aren’t, and vice versa. Try
+handing a presorted list to a sort algorithm.
+• Things that happen out of expected chronological
+order.
+I:
+Checking Inverse Relationship
+• Seek an independent means of verification.
+• 用“逆行为”测试被测试代码
+• 在数据库中插入一条记录后，查询该记录
+• 已经使用的款项总数 = 款项总数 – 剩余的款项数
+C: 
+Cross checking
+• 通过其它方法验证结果的正确性，使用不同的算法或
+实现验证结果
+E:
+Forcing Error Condition
+• think about what kinds of errors or other
+environmental constraints :
+1. destroy business rules
+2. Running out of memory
+3. Running out of disk space
+4. Network availability and errors
+5. System load
+6. Very high or very low video resolution
+……….
+• 使用Mock对象模拟各种异常
+P:
+Performance characteristics
+• Usually applied to E2E testing
+• Take as baseline information for changing###        
+Corner Case Testing
+• 每个被测对象使用CORRECT启发式规则：
+1. 是否涉及这些条件
+2. 当条件被违背时会发生什么
+• Conformance: 数据格式是否与期望的一致
+• Ordering：数据之间的顺序是否满足要求
+• Range：数据是否在合理的最大值和最小值之间
+• Reference：被测代码是否使用了无法控制的外部引用
+• Existence：数据是否被要求存在，例如非空,非0,必须在集合中
+• Cardinality：数据数量是否满足要求
+• Time：每件事情是否按顺发生？是否在正确的时间发生？发生
+是否及时？
+Conformance
+• 单一结构的数据
+• E-mail，phone number…..
+• 复合结构的数据
+• （姓名，场地，时间）：只没有姓名/场地/时间，
+只有姓名/场地/时间…….
+• 确定数据什么时候进入系统，有利于测试设计
+• UI层就确定了，那么测试就会简单
+Ordering
+• the position of one piece of data within a larger
+collection
+Range
+• Java primitive types (primitive obsession：age，
+salary，score)
+• customized range
+• Invariant assertion
+Reference
+• May consider:
+1. What method under test（MUT） references outside
+its scope
+2. What external dependencies MUT has
+3. Whether MUT depends on the object being in a certain
+state
+4. Any other conditions that must exist
+• precondition
+• postcondition
+• side effect
+Existence：Dose some given thing exist？
+• what will happen if the value is null, zero, or otherwise
+empty, especially check value returned
+• a special case of cardinality
+Cardinality（护栏柱测试）
+• the count of some set of values is only interesting in
+these three cases (0-1-n rule)
+• Zero
+• One
+• Many (more than one)
+Time
+• Relative time (ordering in time) : if methods are called
+out of order
+• Absolute time (elapsed and wall clock): test any time-
+sensitive code on boundary days
+• Concurrency issues
+1. what will happen if multiple threads access the
+same object at the same time?
+2. Do you need to synchronize any global or instance-
+level data or methods?
+3. How about external access to files or hardware?###

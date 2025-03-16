@@ -11,7 +11,7 @@ class RAG:
         persist_dir="./chroma_db",
         model_name="BAAI/bge-large-zh-v1.5",
         device="cpu",
-        k = 3
+        k=3
     ):
         self.file_path = file_path
         self.persist_dir = persist_dir
@@ -51,7 +51,7 @@ class RAG:
         try:
             with open(self.file_path, encoding='utf-8') as f:
                 state_of_the_union = f.read()  # 读取文件返回字符串
-                texts = state_of_the_union.split("\n")  # 按行分割文本
+                texts = state_of_the_union.split("###")  # 按行分割文本
                 documents = [
                     Document(page_content=text, metadata={"source": self.file_path})
                     for i, text in enumerate(texts)
