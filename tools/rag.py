@@ -64,14 +64,14 @@ class RAG:
         """执行检索并返回上下文"""
         docs = self.retriever.invoke(query)
         return "\n\n".join([doc.page_content for doc in docs])
-if __name__ == '__main__':
-    # 文件路径
-    file_path = "../docs/ch1软件测试知识库.txt"
-    # 创建或加载向量数据库
-    rag = RAG(file_path)
-    # 创建检索器
-    # retriever = db.as_retriever(search_kwargs={"k": 2})
-    # 查询示例
-    query = "什么是软件缺陷"
-    retrieved_docs = rag.retrieve(query)
-    print(retrieved_docs)
+# if __name__ == '__main__':
+#     # 文件路径
+#     file_path = "../docs/ch1软件测试知识库.txt"
+#     # 创建或加载向量数据库
+#     rag = RAG(file_path)
+#     # 创建检索器
+#     # retriever = db.as_retriever(search_kwargs={"k": 2})
+#     # 查询示例
+#     query = "什么是软件缺陷"
+#     retrieved_docs = rag.retrieve(query)
+#     print(retrieved_docs)
