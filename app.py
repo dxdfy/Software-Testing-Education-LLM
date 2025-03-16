@@ -3,7 +3,6 @@ from openai import OpenAI
 from tools.prompt import generate_prompt
 from tools.rag import RAG
 
-
 @st.cache_resource
 def initialize_components():
     # 1. 初始化 RAG

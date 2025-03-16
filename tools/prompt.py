@@ -12,7 +12,7 @@ def generate_prompt(user_input,context,api_key="sk-03c2c982629b43c4bf87446553dd5
         stream=False
     )
     cla = response.choices[0].message.content
-    print(cla)
+    # print(cla)
     if cla == "知识性问题":
         enhanced_prompt = f"""
                 用户问题：{user_input}
@@ -27,10 +27,3 @@ def generate_prompt(user_input,context,api_key="sk-03c2c982629b43c4bf87446553dd5
                         要求：参考上下文知识，将问题分为子问题，一步步推理，严格区分软件缺陷、故障、失效
                         """
         return enhanced_prompt
-generate_prompt("""
-2. 下列说法正确的是（ ）
-A. 系统产生故障，说明测试输入满足可达性；
-B. 系统产生故障，说明测试输入不满足可达性；
-C. 系统没有产生故障，说明测试输入满足可达性；
-D. 系统没有产生故障，说明测试输入不满足可达性；
-""","")
